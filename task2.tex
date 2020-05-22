@@ -11,6 +11,10 @@
 \usepackage{vmargin}
 \usepackage{longtable}
 \usepackage{multirow}
+\usepackage{verbatim}
+
+
+
 
 %\usepackage{opensans}% 
 \renewcommand{\familydefault}{\sfdefault}
@@ -277,5 +281,82 @@ Another main concern was about the duality, and as long as there is sunshine the
 \section{References}
 
 \section{Appendices}
+\subsection{Magnetic field measuremnt modeling}
+
+This simulation was conducted in Julia programing langauge with the following code:
+\begin{verbatim}
+  using PyPlot 
+using FFTW
+
+x = 0.4; #dimension of pole [m]
+y = 0.3;
+
+# NB! in this simulation the sensor is Modeld as being in the (0,0) position!
+
+
+μ0 = 1.256637061*10^(-6); #magnetic permiability of air
+MagnitudeOfCurrent = 100;  #Estimated avarage Value of current in wires
+
+Ax = -x;       #defining physical dimensions from sensor to phases
+Ay = 0;
+Bx= 0;
+By = y*99999;
+Cx = x*99999999;
+Cy = 0;
+
+Ad = sqrt(Ax^2+Ay^2);
+Bd = sqrt(Bx^2+By^2);
+Cd = sqrt(Cx^2+Cy^2);
+
+t = 0:0.00001: 1;
+I_a = MagnitudeOfCurrent*sin.(2*π*t*50);    #current in each of the phases
+I_b = MagnitudeOfCurrent*sin.(2*π*50*t.+ (2*π/3));
+I_c = MagnitudeOfCurrent*sin.(2*π*50*t .+ (4*π/3));
+
+figure()
+plot(t, I_a,t,I_b,t,I_c),
+title("Plot of current through all the phases"),
+legend(["I_a", "I_b","I_c"])
+
+B(I,d) = μ0*(I)./d    #equation for calculating magnetic
+                      # flux from current carrying wire
+
+B_a = B(I_a,Ad);
+B_b = B(I_b,Bd);
+B_c = B(I_c,Cd);
+
+
+
+
+Btot_y= -B_a + B_c;   #assuming the sensor is at positon (0,0)
+                      #these phases only act in the Y direction
+Btot_x = B_b    ;    #assuming the sensor is at positon (0,0) 
+figure()             #this phase only acts in the X direction
+plot(t,Btot_y)
+
+figure()
+plot(Btot_x,t)
+
+
+Bmag = sqrt.(Btot_y.^2+Btot_x.^2);  #calculation of The
+                                    # toatal magnitude measured
+
+figure()
+plot(t,Bmag)
+
+X = fft(Bmag);
+
+
+figure()
+plot(abs.(X[1:500]))
+figure()
+plot(abs.(X[1:500])); 
+title("Fourier tansform of Magnetic field Magnitude With two phase removed"); 
+xlabel("Frequency [Hz]"); ylabel("Magnitude")
+
+
+\end{verbatim}
+
+
 
 \end{document}

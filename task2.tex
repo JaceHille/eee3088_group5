@@ -12,7 +12,7 @@
 \usepackage{longtable}
 \usepackage{multirow}
 
-\usepackage{opensans} 
+%\usepackage{opensans}% 
 \renewcommand{\familydefault}{\sfdefault}
 
 \usepackage[normalem]{ulem}
@@ -187,6 +187,22 @@ The user requirements set above shall be verified according to the following tes
 \section{Microcontroller Subsystem Design}
 
 \section{Wireless Communications Design}
+
+\subsection{Wireless Protocol}
+
+The Weightless wireless technology standard has been selected for the wireless communication needs of each sensor node. Weightless supports data transmission over long distances and is a standard designed for low-power wide area networks (LPWAN) involving base stations and end devices. For the purposes of the project, some criteria was identified to measure the performance of the wireless technology standard selected: the power efficiency, range, network capacity and  functionality and ease of configurability.(complexity) Weightless-P is a open standard and operates across the range of ISM, sub GHz  frequency bands for ease of development of IoT systems. 
+
+It was recognised that interference and noise in urban areas compared to rural areas differ, therefore the transmission range would also be affected in different ways. That's why a wireless standard with an adaptive data rate and transmission power was selected to cater for the different signal paths and the environments in which the base stations and sensors nodes will be placed. That together with the fact that the end devices using Weightless can also be configured to be idle/turn to sleep mode, will allow for better power efficiency and aid to maximise the lifespan of our sensor nodes. 
+To also save on costs we also identified the need for a standard that has large network capacity, allowing the use of fewer base stations that can each cover communication between multiple sensor nodes.
+
+[https://www.ubiik.com/post/2016/09/21/what-is-weightless-p], [https://www.electronicdesign
+.com/industrial-automation/article/21807028/choosing-the-right-wireless-protocol-for-your-iot-application], [https://radiobridge.com/blog/choosing-the-right-wireless-standard-for-your-iot-sensors]
+
+\subsection{Message Packet Design}
+
+\subsection{Range and Error rate simulations}
+[https://www.mathworks.com/help/comm/examples/bluetooth-low-energy-bit-error-rate-simulation.html], %Bit Error Rates - Need to find one for  Weightless%
+[https://www.mathworks.com/help/comm/examples.html?category=rf-propagation]%Range and Power Simulation %
 
 \section{Power Supply Design}
 

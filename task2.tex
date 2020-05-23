@@ -12,12 +12,42 @@
 \usepackage{longtable}
 \usepackage{multirow}
 \usepackage{verbatim}
-
-
-
+\usepackage{listings}
+\usepackage[makeroom]{cancel}
 
 %\usepackage{opensans}% 
 \renewcommand{\familydefault}{\sfdefault}
+
+\usepackage[T1]{fontenc}
+\usepackage{beramono}
+\usepackage[usenames,dvipsnames]{xcolor}
+
+%%
+%% Julia definition (c) 2014 Jubobs
+%%
+\lstdefinelanguage{Julia}%
+  {morekeywords={abstract,break,case,catch,const,continue,do,else,elseif,%
+      end,export,false,for,function,immutable,import,importall,if,in,%
+      macro,module,otherwise,quote,return,switch,true,try,type,typealias,%
+      using,while},%
+   sensitive=true,%
+   alsoother={\$},%
+   morecomment=[l]\#,%
+   morecomment=[n]{\#=}{=\#},%
+   morestring=[s]{"}{"},%
+   morestring=[m]{'}{'},%
+}[keywords,comments,strings]%
+
+\lstset{%
+    language         = Julia,
+    basicstyle       = \ttfamily,
+    keywordstyle     = \bfseries\color{blue},
+    stringstyle      = \color{magenta},
+    commentstyle     = \color{ForestGreen},
+	showstringspaces = false,
+	numbers=left,
+    stepnumber=1,
+}
 
 \usepackage[normalem]{ulem}
 \setmarginsrb{3 cm}{2.5 cm}{3 cm}{2.5 cm}{1 cm}{1.5 cm}{1 cm}{1.5 cm}
@@ -350,7 +380,7 @@ Another main concern was about the duality, and as long as there is sunshine the
 \subsection{Magnetic field measurement modeling}
 
 This simulation was conducted in Julia programing language with the following code:
-\begin{verbatim}
+\begin{lstlisting}
 using PyPlot 
 using FFTW
 
@@ -421,7 +451,7 @@ title("Fourier tansform of Magnetic field Magnitude With two phase removed");
 xlabel("Frequency [Hz]"); ylabel("Magnitude")
 
 
-\end{verbatim}
+\end{lstlisting}
 
 
 

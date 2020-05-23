@@ -1,0 +1,146 @@
+\documentclass[11pt]{article}
+\usepackage[english]{babel}
+\usepackage{natbib}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage{vmargin}
+\usepackage{multirow}
+\usepackage{listings}
+\usepackage[makeroom]{cancel}
+
+\usepackage{opensans} 
+\renewcommand{\familydefault}{\sfdefault}
+
+
+\usepackage[T1]{fontenc}
+\usepackage{beramono}
+\usepackage[usenames,dvipsnames]{xcolor}
+\DeclareUnicodeCharacter{65533}{$\sigma$}
+
+%%
+%% Julia definition (c) 2014 Jubobs
+%%
+\lstdefinelanguage{Julia}%
+  {morekeywords={abstract,break,case,catch,const,continue,do,else,elseif,%
+      end,export,false,for,function,immutable,import,importall,if,in,%
+      macro,module,otherwise,quote,return,switch,true,try,type,typealias,%
+      using,while},%
+   sensitive=true,%
+   alsoother={\$},%
+   morecomment=[l]\#,%
+   morecomment=[n]{\#=}{=\#},%
+   morestring=[s]{"}{"},%
+   morestring=[m]{'}{'},%
+}[keywords,comments,strings]%
+
+\lstset{%
+    language         = Julia,
+    basicstyle       = \ttfamily,
+    keywordstyle     = \bfseries\color{blue},
+    stringstyle      = \color{magenta},
+    commentstyle     = \color{ForestGreen},
+	showstringspaces = false,
+	numbers=left,
+    stepnumber=1,
+}
+
+
+\usepackage[normalem]{ulem}
+\setmarginsrb{2 cm}{1.5 cm}{2 cm}{1.5 cm}{1 cm}{1.5 cm}{1 cm}{1.5 cm}
+
+\title{First Tutorial Submission}								% Title
+\author{Torsten Babl}			% Author
+\date{\today}											  % Date
+
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\theauthor}
+\lhead{\thetitle}
+\cfoot{\thepage}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{titlepage}
+	\centering
+    \vspace*{0.5 cm}
+    \includegraphics[scale = 0.75]{UCT.jpg}\\[1.0 cm]	% University Logo
+    \textsc{\LARGE University of Cape Town}\\[2.0 cm]	% University Name
+    \textsc{\Large EEE3088F}\\[0.5 cm]				% Course Code
+    
+	\textsc{\large Design I}\\[0.5 cm]				% Course Name
+	\rule{\linewidth}{0.2 mm} \\[0.4 cm]
+	{ \huge \bfseries \thetitle}\\
+	\rule{\linewidth}{0.2 mm} \\[1.5 cm]
+	
+	\begin{minipage}{0.4\textwidth}
+		\begin{flushleft} \large
+			\emph{Author:}\\
+			\theauthor
+			\end{flushleft}
+			\end{minipage}~
+			\begin{minipage}{0.4\textwidth}
+			\begin{flushright} \large
+			\emph{Student Number:} \\
+			BBLTOR001									% Your Student Number
+		\end{flushright}
+	\end{minipage}\\[2 cm]
+	
+	{\large 15 May 2020}\\[2 cm]
+ 
+	\vfill
+	
+\end{titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Question 5.1.}
+\textbf{Mean: } $\bar{x} = 2,275$ \\
+\textbf{Standard deviation:} $\sigma = 0,4143$\\
+71,4\% of the values lie within a standard deviation of the mean.\\
+This is very close to the 68\% expected.\\
+All of the values lie within three standard deviations of the mean. \\
+This is also expected of a Gaussian distribution.
+
+\begin{lstlisting}
+	using PyPlot
+using Statistics
+
+
+x = [1.9223, 2.1234, 1.9324, 3.00123, 2.3143, 2.4365, 1.65438, 
+    1.8223, 2.1789, 2.6544, 2.98903, 2.5142, 2.3465, 1.96548]
+
+xbar = mean(x)
+σ = std(x)
+println(x)
+println("mean = ", xbar)
+println("σ = ", σ)
+
+inside_σ = filter(i -> i > xbar - σ && i < xbar + σ, x)
+
+println(inside_σ)
+println(length(inside_σ) / length(x))
+
+inside_3σ = filter(i -> i > xbar - 3*σ && i < xbar + 3*σ, x)
+
+println(inside_3σ)
+println(length(inside_3σ) / length(x))
+\end{lstlisting}
+
+\section{Question 5.7.}
+
+
+
+
+\end{document}

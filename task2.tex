@@ -189,12 +189,12 @@ The user requirements set above shall be verified according to the following tes
 \section{Sensing Subsystem Design}
 \subsection{Device Selection}
 Pololu AltIMU-10 v5 is the chosen sensor for this project. There are three integrated circuits embedded on the board that
- we will make use of; the LSM6DS33, LIS3MDL and the LP525H. The LSM6DS33 has a gyroscope and accelerometer. 
- These are used to track the motion of the pole; tilt, free-fall, orientation change. 
- The LIS3MDL has a magnetometer, compass and temperature sensor.
- The LP525H has a digital barometer on it to measure pressure. 
- We will look at each of the onboard chips to see how they functionalities unite to create this sensing device and the 
- features that enable us to use it. 
+we will make use of; the LSM6DS33, LIS3MDL and the LP525H. The LSM6DS33 has a gyroscope and accelerometer. 
+These are used to track the motion of the pole; tilt, free-fall, orientation change. 
+The LIS3MDL has a magnetometer, compass and temperature sensor.
+The LP525H has a digital barometer on it to measure pressure. 
+We will look at each of the onboard chips to see how they functionalities unite to create this sensing device and the 
+features that enable us to use it. 
 
 \subsection{Accuracy}
 Sensing devices must be able to retrieve information of the pole’s current situation and relay that data to the onboard 
@@ -351,7 +351,7 @@ Another main concern was about the duality, and as long as there is sunshine the
 
 This simulation was conducted in Julia programing language with the following code:
 \begin{verbatim}
-  using PyPlot 
+using PyPlot 
 using FFTW
 
 x = 0.4; #dimension of pole [m]

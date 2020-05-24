@@ -233,7 +233,7 @@ information to the end of line being the local power utility. If an error is det
 a team to the node/s of interest.
 
 Macroscopic System Design:\\
-\includegraphics[scale = 1]{Macroscopic system breakdown.PNG}
+\includegraphics[scale = 1]{Macroscopic_system_breakdown}
 
 The node is to send a ‘heartbeat’ signal back to the Base Station when no error is detected by the node. 
 If the device detects an error has occurred, it will send a ‘failure’ signal to the Base station. Should 
@@ -248,7 +248,7 @@ processed by the Microcontroller within the node. Each node will an independent 
 a photovoltaic panel.  This is to reduce dependency on the power lines being monitored.
 
 System Breakdown: \\
-\includegraphics[scale = 0.6]{System Design.jpg}
+\includegraphics[scale = 0.6]{System_Design.jpg}
 
 \section{Sensing Subsystem Design}
 \subsection{Device Selection}
@@ -288,7 +288,7 @@ The LSM6DS33 has various modes of operation. The one chosen for this sensing pro
 and accelerometer are active for continuous monitoring of data from both devices. During active mode, the gyroscope and 
 
 accelerometer must perform at the appropriate frequencies discussed in the modelling subsection . The gyroscope and accelerometer can operate at low power
-modes. This is configured by setting G_HM_MODE bit in CTRL7_G (16h) and XL_HM_MODE bit in CTRL6_C (15h) to 1. 
+modes. This is configured by setting G\_HM\_MODE bit in CTRL7\_G (16h) and XL\_HM\_MODE bit in CTRL6\_C (15h) to 1. 
 
 The gyroscope is accurate at tracking rotation on a short time-scale only. In order to compensate for this, the 
 accelerometer is coupled with the compass on the LIS3MDL.
@@ -425,10 +425,26 @@ The header contains contains a preamble which is used to synchronise the communi
 %[https://www.mathworks.com/help/comm/examples.html?category=rf-propagation]%Range and Power Simulation %
 
 \subsection{Communication Range}
+Base stations supplied by Ubiik have a receive sensitivity of -129 dBm. With conservative estimates of losses the link
+budget was calculated as follows:
+
+%https://en.wikipedia.org/wiki/Free-space_path_loss
+
+\begin{table}[]
+\begin{tabular}{|l|l|l|}
+Transmitter an & Two & Three \\
+\end{tabular}
+\end{table}
+
 
 \subsection{Power Consumption}
+The RF module manufacturer, Ubiik, specifies sleep current as $<4 \space \mu A$, transmit current at $25 \space mW$ 
+transmitted power as $49 \space mA$ and receive current as $13 \space mA$. %Reference here
+
+If no additional data is requested by the base station the transmit duty cycle will be under 1\%.
 
 \subsection{Power Control}
+The $AT+TXPWR$ AT command can be used to specify the desired transmitter output power in dBm units.
 
 \section{Power Supply Design}
 \subsection{User requirements in regards to power supply of system}

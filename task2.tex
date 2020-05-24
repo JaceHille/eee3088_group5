@@ -218,6 +218,36 @@ The user requirements set above shall be verified according to the following tes
 
 \section{System Design and Overview}
 
+This goal for this system is sensing and reporting system is to identify and report faults on 33kV transmission
+lines that do not trigger an earth leakage or overcurrent fault condition on existing switching systems, yet
+still pose a safety risk to the public. Such faults are often caused by storm damage, motor/construction vehicle
+impact and malicious damage to public property generally caused by theft. In addition to post-fault reporting the
+early recognition of structural degradation can potentially save the Utility money by allowing planned and
+targeted maintenance to prevent future unexpected faults. 
+
+This system will have two members of devices that form the final product. These will be sensing nodes attached
+to individual poles and base stations that will receive the information from these nodes and broadcast this
+information to the end of line being the local power utility. If an error is detected the utility is to send
+a team to the node/s of interest.
+
+Macroscopic System Design:
+\includegraphics{Macroscopic system breakdown.PNG}
+
+The node is to send a ‘heartbeat’ signal back to the Base Station when no error is detected by the node. 
+If the device detects an error has occurred, it will send a ‘failure’ signal to the Base station. Should 
+no signal be received for longer than an acceptable timeframe the system defaults to a ‘failure’ signal 
+and thus a team will be dispatched. The base stations are set up along the line of interest each  with  
+the ability to contact the End of Line individually. Should a Base Station fail to send the ‘heartbeat’ 
+signal it is assumed to be damaged and thus a dispatch is required.
+
+To asses if the pole that the node is connected to is healthy and operating correctly the node will use 
+a combination of a digital Accelerometer, Magnetometer and Barometer. This information is then to be 
+processed by the Microcontroller within the node. Each node will an independent power supply powered by 
+a photovoltaic panel.  This is to reduce dependency on the power lines being monitored.
+
+System Breakdown:
+\includegraphics{System Design.jpg}
+
 \section{Sensing Subsystem Design}
 \subsection{Device Selection}
 Pololu AltIMU-10 v5 is the chosen sensor for this project. There are three integrated circuits embedded on the board that

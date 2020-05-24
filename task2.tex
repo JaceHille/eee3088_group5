@@ -161,28 +161,28 @@ The following faults must be detectable:
   \begin{table}[htp!]
     \caption{Table of Faults to Detect}
     
-    \hskip-1.2cm\begin{tabular}{|p{2cm}|p{4cm}|p{8cm}|p{4cm}|}
+    \hskip-1.2cm\begin{tabular}{|p{2cm}|p{5cm}|p{11cm}|}
         \hline
-        \textbf{Fault No.} & \textbf{Fault Name} & \textbf{Detailed Description} & \textbf{Illustration} \\
+        \textbf{Fault No.} & \textbf{Fault Name} & \textbf{Detailed Description} \\
         \hline
         F01 & Phase failure & Loss  of  energy  of  one  or  more  lines  due  to  faults
-        between the node and the supply. & - \\\hline
+        between the node and the supply. \\\hline
 
         F02 & Line detachment & One or more lines are detached from the isolator on the A-frame while the pole remains
-        upright. & - \\\hline
+        upright. \\\hline
 
         F03 & Pole dislodgment and/or rotation & Pole is no longer upright or loses orientation through forces on the
-        lines or pole itself. & - \\\hline
+        lines or pole itself. \\\hline
 
-        F00 & Strong Impact to pole & An unusually strong impact to the pole is observed. & - \\\hline
+        F04 & Strong Impact to pole & An unusually strong impact to the pole is observed. \\\hline
 
-        F00 & Sudden movement & The top of the pole is still upright and oriented as before but has moved out of
-        position. i.e. Top segment of pole is suspended by the lines. & - \\\hline
-        %Don't like these two
-        F04 & Possible structural fatigue of pole & The structure of the pole is compromised due to material fatigue. & - \\\hline
+        F05 & Sudden movement & The top of the pole is still upright and oriented as before but has moved out of
+        position. i.e. Top segment of pole is suspended by the lines. \\\hline
 
-        F06 & Pole and node failure due to damaging force & A damaging force is strong enough to damage both the pole
-        and the node. & - \\\hline
+        F06 & Possible structural fatigue of pole & The structure of the pole is compromised due to material fatigue. \\\hline
+
+        F07 & Pole and node failure due to damaging force & A damaging force is strong enough to damage both the pole
+        and the node.  \\\hline
   
     \end{tabular}    
   
@@ -430,11 +430,28 @@ budget was calculated as follows:
 
 %https://en.wikipedia.org/wiki/Free-space_path_loss
 
-\begin{table}[]
-\begin{tabular}{|l|l|l|}
-Transmitter an & Two & Three \\
+\begin{table}[!htp]
+\begin{tabular}{|l|l|rl|l|l|rl|}
+\hline
+Transmitter antenna gain & $G_{tx}$ & 0&dB & Transmitter power & $P_{tx}$ & 14&dBm \\
+Transmitter antenna loss & $L_{tx}$ & 3&dB & Receiver sensitivity & $S_{rx}$ & -129&dBm \\
+Receiver antenna gain & $G_{rx}$ & 13&dB & Frequency & $f$ & 868&Hz \\
+Receiver antenna loss & $L_{rx}$ & 3&dB &&&&\\
+\hline
 \end{tabular}
 \end{table}
+
+The power received by the base station, $P_{rx}$, is given by the following formula:
+\[P_{rx} = P_{tx} - L_{tx} + G_{tx} - FSPL + G_{rx} - L_{rx}\]
+Rearranging this formula and substituting the values allows for a $FSPL$ value of $153\,dB$.
+The free space path loss, $FSPL$, in dB with distance, $d$, in km and frequency, $f$, in MHz is given by the following 
+formula:
+\[FSPL = 20log_{10}(d) + 20log_{10}(f) + 32,44\] %https://en.wikipedia.org/wiki/Free-space_path_loss
+Rearranging the above formula and allowing for a margin of $25\,dB$ in losses $d$ is calculated as:
+\[d = 48\,km\]
+This range is theoretical and does not accurately take terrain obstructions etc. into consideration. The link budget, 
+however, allows for enough overhead to allow a small number of base stations of small size and average internet connectivity
+to cover a large rural or urban-edge environment.
 
 
 \subsection{Power Consumption}

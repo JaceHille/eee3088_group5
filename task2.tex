@@ -230,8 +230,8 @@ to individual poles and base stations that will receive the information from the
 information to the end of line being the local power utility. If an error is detected the utility is to send
 a team to the node/s of interest.
 
-Macroscopic System Design:
-\includegraphics{Macroscopic system breakdown.PNG}
+Macroscopic System Design:\\
+\includegraphics[scale = 1]{Macroscopic system breakdown.PNG}
 
 The node is to send a ‘heartbeat’ signal back to the Base Station when no error is detected by the node. 
 If the device detects an error has occurred, it will send a ‘failure’ signal to the Base station. Should 
@@ -245,8 +245,8 @@ a combination of a digital Accelerometer, Magnetometer and Barometer. This infor
 processed by the Microcontroller within the node. Each node will an independent power supply powered by 
 a photovoltaic panel.  This is to reduce dependency on the power lines being monitored.
 
-System Breakdown:
-\includegraphics{System Design.jpg}
+System Breakdown: \\
+\includegraphics[scale = 0.6]{System Design.jpg}
 
 \section{Sensing Subsystem Design}
 \subsection{Device Selection}
@@ -284,7 +284,7 @@ interrupt is sent through.
 
 The LSM6DS33 has various modes of operation. The one chosen for this sensing project is the case when both the gyroscope
 and accelerometer are active for continuous monitoring of data from both devices. During active mode, the gyroscope and 
-accelerometer must perform at “whatever we chose” respectively. The gyroscope and accelerometer can operate at low power
+accelerometer must perform at the appropriate frequencies discussed in the modelling subsection . The gyroscope and accelerometer can operate at low power
 modes. This is configured by setting G_HM_MODE bit in CTRL7_G (16h) and XL_HM_MODE bit in CTRL6_C (15h) to 1. 
 
 The gyroscope is accurate at tracking rotation on a short time-scale only. In order to compensate for this, the 

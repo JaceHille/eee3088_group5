@@ -14,7 +14,7 @@
 \usepackage{listings}
 \usepackage[makeroom]{cancel}
 \usepackage{csquotes}
-\usepackage[backend=biber]{biblatex}
+\usepackage[backend=biber, style=authoryear]{biblatex}
 \addbibresource{bibliography.bib}
 
 \usepackage{opensans}
@@ -198,14 +198,14 @@ The following faults must be detectable:
         \hline
         \textbf{Requirement Category} & \textbf{Req. No.} & \textbf{Requirement Name} & \textbf{Detailed Description} \\
         \hline
-        One & R00 & Reporting time & A detected fault must be reported within 10 minutes of the incident \\\hline
-        One & R00 & Product lifespan & 90\% of deployed devices must still be functional after 10 years of installation \\\hline
+        Performance & R01 & Reporting time & A detected fault must be reported within 10 minutes of the incident \\\hline
+        Durability & R02 & Product lifespan & 90\% of deployed devices must still be functional after 10 years of installation \\\hline
         %Add BOM to list of definitions
-        One & R00 & Device cost & The BOM cost of a single device should not exceed 250 ZAR \\\hline
-        One & R00 & Additional infrastructure & If any additional infrastructure is needed it should not add significantly
+        Cost & R03 & Device cost & The bill of materials cost of a single device should not exceed 25 USD \\\hline
+        Cost & R04 & Additional infrastructure & If any additional infrastructure is needed it should not add significantly
         to the cost of rollout \\\hline
         %Add ISM band to list of Definitions
-        One & R00 & Communication bands & All wireless communications should use ISM bands permitted in South Africa
+        Legal compliance & R05 & Communication bands & All wireless communications should use ISM bands permitted in South Africa
         to ease certification and decrease cost. \\\hline
   
     \end{tabular}    
@@ -287,7 +287,8 @@ interrupt is sent through.
 The LSM6DS33 has various modes of operation. The one chosen for this sensing project is the case when both the gyroscope
 and accelerometer are active for continuous monitoring of data from both devices. During active mode, the gyroscope and 
 
-accelerometer must perform at the appropriate frequencies discussed in the modelling subsection . The gyroscope and accelerometer can operate at low power
+accelerometer must perform at the appropriate frequencies discussed in the modelling subsection . The gyroscope and 
+accelerometer can operate at low power
 modes. This is configured by setting G\_HM\_MODE bit in CTRL7\_G (16h) and XL\_HM\_MODE bit in CTRL6\_C (15h) to 1. 
 
 The gyroscope is accurate at tracking rotation on a short time-scale only. In order to compensate for this, the 
@@ -375,10 +376,24 @@ computation and data channels  from  the Microcontroller.
 
 \subsection{Wireless Protocol}
 
-The Weightless wireless technology standard has been selected for the wireless communication needs of the wireless commmunications module on the sensor node. Weightless supports supports secure bidirectional data transmission over long distances and is a standard designed for low-power wide area networks (LPWAN) involving base stations and end or terminal devices. For the purposes of the project, some criteria was identified to measure the performance of the wireless technology standard selected: the power efficiency, range, network capacity and  functionality and ease of configurability(complexity) Weightless is a open standard and operates across the range of Industrial, Scientific and Medical ISM, sub GHz  frequency bands for ease of development of IoT systems. 
+The Weightless wireless technology standard has been selected for the wireless communication needs of the wireless 
+communications module on the sensor node. Weightless supports supports secure bidirectional data transmission over long 
+distances and is a standard designed for low-power wide area networks (LPWAN) involving base stations and end or terminal 
+devices \parencite{whatweightless}.
 
-It was also recognised that interference and noise in urban areas compared to rural areas differ, therefore the transmission range would also be affected in different ways. That's why a wireless standard with an adaptive data rate and transmission power was selected to cater for the different signal paths and the environments in which the base stations and sensors nodes will be placed. That together with the fact that the end devices using Weightless can also be configured to be idle/turn to sleep mode, will allow for better power efficiency and aid to maximise the lifespan of our sensor nodes. 
-To also save on costs we also identified the need for a standard that has large network capacity, allowing the use of fewer base stations that can each cover communication between multiple sensor nodes.
+For the purposes of the project, some criteria was identified to measure the performance of the wireless technology 
+standard selected: the power efficiency, range, network capacity and  functionality and ease of configurability 
+(complexity) Weightless is a open standard and operates across the range of Industrial, Scientific and Medical ISM, 
+sub GHz  frequency bands for ease of development of IoT systems \parencite{gallorinichoose}. 
+
+It was also recognised that interference and noise in urban areas compared to rural areas differ, therefore the 
+transmission range would also be affected in different ways. That's why a wireless standard with an adaptive data rate 
+and transmission power was selected to cater for the different signal paths and the environments in which the base 
+stations and sensors nodes will be placed. That together with the fact that the end devices using Weightless can also be 
+configured to be idle/turn to sleep mode, will allow for better power efficiency and aid to maximise the lifespan of our 
+sensor nodes. 
+To also save on costs we also identified the need for a standard that has large network capacity, allowing the use of 
+fewer base stations that can each cover communication between multiple sensor nodes \parencite{frucirb}.
 
 %REFERENCES%
 %1 . [https://www.ubiik.com/post/2016/09/21/what-is-weightless-p], %
@@ -455,8 +470,9 @@ to cover a large rural or urban-edge environment.
 
 
 \subsection{Power Consumption}
-The RF module manufacturer, Ubiik, specifies sleep current as $<4 \space \mu A$, transmit current at $25 \space mW$ 
-transmitted power as $49 \space mA$ and receive current as $13 \space mA$. %Reference here
+The RF module manufacturer, Ubiik, specifies sleep current as $<4\,\mu A$, transmit current at $25\,mW$ 
+transmitted power as $49\,mA$ and receive current as $13\,mA$. %Reference here
+The RF module takes a $3,3\,V$ power supply.
 
 If no additional data is requested by the base station the transmit duty cycle will be under 1\%.
 
@@ -483,9 +499,6 @@ Since our device needs to stay alert 24/7 for poles that might fall or short any
 
 Another main concern was about the duality, and as long as there is sunshine there will be enough energy to supply power towards the system.  
 
-\section{Additional Design Components}
-
-\section{References}
 \printbibliography
 
 \section{Appendices}

@@ -14,7 +14,7 @@
 \usepackage{listings}
 \usepackage[makeroom]{cancel}
 \usepackage{csquotes}
-\usepackage[backend=biber]{biblatex}
+\usepackage[backend=biber, style=authoryear]{biblatex}
 \addbibresource{bibliography.bib}
 
 \usepackage{opensans}
@@ -161,28 +161,28 @@ The following faults must be detectable:
   \begin{table}[htp!]
     \caption{Table of Faults to Detect}
     
-    \hskip-1.2cm\begin{tabular}{|p{2cm}|p{4cm}|p{8cm}|p{4cm}|}
+    \hskip-1.2cm\begin{tabular}{|p{2cm}|p{5cm}|p{11cm}|}
         \hline
-        \textbf{Fault No.} & \textbf{Fault Name} & \textbf{Detailed Description} & \textbf{Illustration} \\
+        \textbf{Fault No.} & \textbf{Fault Name} & \textbf{Detailed Description} \\
         \hline
         F01 & Phase failure & Loss  of  energy  of  one  or  more  lines  due  to  faults
-        between the node and the supply. & - \\\hline
+        between the node and the supply. \\\hline
 
         F02 & Line detachment & One or more lines are detached from the isolator on the A-frame while the pole remains
-        upright. & - \\\hline
+        upright. \\\hline
 
         F03 & Pole dislodgment and/or rotation & Pole is no longer upright or loses orientation through forces on the
-        lines or pole itself. & - \\\hline
+        lines or pole itself. \\\hline
 
-        F00 & Strong Impact to pole & An unusually strong impact to the pole is observed. & - \\\hline
+        F04 & Strong Impact to pole & An unusually strong impact to the pole is observed. \\\hline
 
-        F00 & Sudden movement & The top of the pole is still upright and oriented as before but has moved out of
-        position. i.e. Top segment of pole is suspended by the lines. & - \\\hline
-        %Don't like these two
-        F04 & Possible structural fatigue of pole & The structure of the pole is compromised due to material fatigue. & - \\\hline
+        F05 & Sudden movement & The top of the pole is still upright and oriented as before but has moved out of
+        position. i.e. Top segment of pole is suspended by the lines. \\\hline
 
-        F06 & Pole and node failure due to damaging force & A damaging force is strong enough to damage both the pole
-        and the node. & - \\\hline
+        F06 & Possible structural fatigue of pole & The structure of the pole is compromised due to material fatigue. \\\hline
+
+        F07 & Pole and node failure due to damaging force & A damaging force is strong enough to damage both the pole
+        and the node.  \\\hline
   
     \end{tabular}    
   
@@ -198,14 +198,14 @@ The following faults must be detectable:
         \hline
         \textbf{Requirement Category} & \textbf{Req. No.} & \textbf{Requirement Name} & \textbf{Detailed Description} \\
         \hline
-        One & R00 & Reporting time & A detected fault must be reported within 10 minutes of the incident \\\hline
-        One & R00 & Product lifespan & 90\% of deployed devices must still be functional after 10 years of installation \\\hline
+        Performance & R01 & Reporting time & A detected fault must be reported within 10 minutes of the incident \\\hline
+        Durability & R02 & Product lifespan & 90\% of deployed devices must still be functional after 10 years of installation \\\hline
         %Add BOM to list of definitions
-        One & R00 & Device cost & The BOM cost of a single device should not exceed 250 ZAR \\\hline
-        One & R00 & Additional infrastructure & If any additional infrastructure is needed it should not add significantly
+        Cost & R03 & Device cost & The bill of materials cost of a single device should not exceed 25 USD \\\hline
+        Cost & R04 & Additional infrastructure & If any additional infrastructure is needed it should not add significantly
         to the cost of rollout \\\hline
         %Add ISM band to list of Definitions
-        One & R00 & Communication bands & All wireless communications should use ISM bands permitted in South Africa
+        Legal compliance & R05 & Communication bands & All wireless communications should use ISM bands permitted in South Africa
         to ease certification and decrease cost. \\\hline
   
     \end{tabular}    
@@ -233,7 +233,7 @@ information to the end of line being the local power utility. If an error is det
 a team to the node/s of interest.
 
 Macroscopic System Design:\\
-\includegraphics[scale = 1]{Macroscopic system breakdown.PNG}
+\includegraphics[scale = 1]{Macroscopic_system_breakdown}
 
 The node is to send a ‘heartbeat’ signal back to the Base Station when no error is detected by the node. 
 If the device detects an error has occurred, it will send a ‘failure’ signal to the Base station. Should 
@@ -248,7 +248,7 @@ processed by the Microcontroller within the node. Each node will an independent 
 a photovoltaic panel.  This is to reduce dependency on the power lines being monitored.
 
 System Breakdown: \\
-\includegraphics[scale = 0.6]{System Design.jpg}
+\includegraphics[scale = 0.6]{System_Design.jpg}
 
 \section{Sensing Subsystem Design}
 \subsection{Device Selection}
@@ -288,8 +288,9 @@ interrupt is sent through.
 The LSM6DS33 has various modes of operation. The one chosen for this sensing project is the case when both the gyroscope
 and accelerometer are active for continuous monitoring of data from both devices. During active mode, the gyroscope and 
 
-accelerometer must perform at the appropriate frequencies discussed in the modelling subsection . The gyroscope and accelerometer can operate at low power
-modes. This is configured by setting G_HM_MODE bit in CTRL7_G (16h) and XL_HM_MODE bit in CTRL6_C (15h) to 1. 
+accelerometer must perform at the appropriate frequencies discussed in the modelling subsection . The gyroscope and 
+accelerometer can operate at low power
+modes. This is configured by setting G\_HM\_MODE bit in CTRL7\_G (16h) and XL\_HM\_MODE bit in CTRL6\_C (15h) to 1. 
 
 The gyroscope is accurate at tracking rotation on a short time-scale only. In order to compensate for this, the 
 accelerometer is coupled with the compass on the LIS3MDL.
@@ -380,10 +381,24 @@ computation and data channels  from  the Microcontroller.
 
 \subsection{Wireless Protocol}
 
-The Weightless wireless technology standard has been selected for the wireless communication needs of the wireless commmunications module on the sensor node. Weightless supports supports secure bidirectional data transmission over long distances and is a standard designed for low-power wide area networks (LPWAN) involving base stations and end or terminal devices. For the purposes of the project, some criteria was identified to measure the performance of the wireless technology standard selected: the power efficiency, range, network capacity and  functionality and ease of configurability(complexity) Weightless is a open standard and operates across the range of Industrial, Scientific and Medical ISM, sub GHz  frequency bands for ease of development of IoT systems. 
+The Weightless wireless technology standard has been selected for the wireless communication needs of the wireless 
+communications module on the sensor node. Weightless supports supports secure bidirectional data transmission over long 
+distances and is a standard designed for low-power wide area networks (LPWAN) involving base stations and end or terminal 
+devices \parencite{whatweightless}.
 
-It was also recognised that interference and noise in urban areas compared to rural areas differ, therefore the transmission range would also be affected in different ways. That's why a wireless standard with an adaptive data rate and transmission power was selected to cater for the different signal paths and the environments in which the base stations and sensors nodes will be placed. That together with the fact that the end devices using Weightless can also be configured to be idle/turn to sleep mode, will allow for better power efficiency and aid to maximise the lifespan of our sensor nodes. 
-To also save on costs we also identified the need for a standard that has large network capacity, allowing the use of fewer base stations that can each cover communication between multiple sensor nodes.
+For the purposes of the project, some criteria was identified to measure the performance of the wireless technology 
+standard selected: the power efficiency, range, network capacity and  functionality and ease of configurability 
+(complexity) Weightless is a open standard and operates across the range of Industrial, Scientific and Medical ISM, 
+sub GHz  frequency bands for ease of development of IoT systems \parencite{gallorinichoose}. 
+
+It was also recognised that interference and noise in urban areas compared to rural areas differ, therefore the 
+transmission range would also be affected in different ways. That's why a wireless standard with an adaptive data rate 
+and transmission power was selected to cater for the different signal paths and the environments in which the base 
+stations and sensors nodes will be placed. That together with the fact that the end devices using Weightless can also be 
+configured to be idle/turn to sleep mode, will allow for better power efficiency and aid to maximise the lifespan of our 
+sensor nodes. 
+To also save on costs we also identified the need for a standard that has large network capacity, allowing the use of 
+fewer base stations that can each cover communication between multiple sensor nodes \parencite{frucirb}.
 
 %REFERENCES%
 %1 . [https://www.ubiik.com/post/2016/09/21/what-is-weightless-p], %
@@ -392,34 +407,57 @@ To also save on costs we also identified the need for a standard that has large 
 
 \subsection{Message Packet Design}
 %Include explanation of FEC%
-Weightless uses a radio frame, which acts as a framework, structuring how uplink and downlink data transmission will take place between the end devices and the base stations. This radio frame structure describes the format and access methods for the data packets (MAC layer) and also a physical (PHY layer) description of how the bits of binary data will be formatted into a form suitable for radio transmission. The frame structure is shown in Figure 1:\newline
+Weightless uses a radio frame, which acts as a framework, structuring how uplink and downlink data transmission will 
+take place between the end devices and the base stations. This radio frame structure describes the format and access 
+methods for the data packets (MAC layer) and also a physical (PHY layer) description of how the bits of binary data will 
+be formatted into a form suitable for radio transmission. The frame structure is shown in Figure \ref{fig:sam1}:\newline
 
 \begin{figure}[h]
-\caption{Frame structure, [1]}
+\caption{Frame structure, \cite{probee}}
 \includegraphics[scale = 0.55]{./images/comms_frame.png}
+\label{fig:sam1}
 \end{figure}
 
 Key:
 \begin{itemize}
-\item SIB: System Information Blocks, used for frame synchronization and to broadcast semi-static parameters of the Base Station and Base Station Network
+\item SIB: System Information Blocks, used for frame synchronization and to broadcast semi-static parameters of 
+the Base Station and Base Station Network
 \item DL\_RA: Downlink Resource Allocation, composed of multiple bursts describing the allocated downlink transmission slots.
 \item UL\_RA: Uplink Resource Allocation composed of multiple bursts describing the allocated uplink transmission slots.
 \item DL\_ALLOC: the section for allocated downlink transmissions.
 \item UL\_ALLOC: the section for allocated and contended uplink transmissions.
-\item IDLE: an idle slot in which no End Device is allowed to transmit. Reserved for measurements and future use. [1]
+\item IDLE: an idle slot in which no End Device is allowed to transmit. Reserved for measurements and future 
+use \parencite{probee}.
 \end{itemize}
 
-It is within this frame structure that the message packet structures for both uplink and downlink transmission are defined, in the  DL\_ALLOC and UL\_ALLOC  sub-frames in Figure 1. Due to the different transmission environments that the sensor modules will be exposed to, careful consideration was taken to ensure that the effects of noise and interference are mitigated to avoid data corruption, which causes errors in the bits of data that are transmitted between the nodes and the base stations. The Weightless standard ensures that the message packets have some form of error correction technique or redundancy. Both the uplink and downlink data packets have the same basic structure as shown in Figure 2: \newline \newline \newline \newline \newline
+It is within this frame structure that the message packet structures for both uplink and downlink transmission are
+defined, in the  DL\_ALLOC and UL\_ALLOC  sub-frames in Figure 1. Due to the different transmission environments that 
+the sensor modules will be exposed to, careful consideration was taken to ensure that the effects of noise and 
+interference are mitigated to avoid data corruption, which causes errors in the bits of data that are transmitted 
+between the nodes and the base stations. The Weightless standard ensures that the message packets have some form of 
+error correction technique or redundancy. Both the uplink and downlink data packets have the same basic structure as 
+shown in Figure \ref{fig:sam2}:
 
 \begin{figure}[h]
-\caption{Message structure, [1]}
+\caption{Message structure, \cite{probee}}
 \includegraphics[scale = 0.7]{./images/message_structure.png}
+\label{fig:sam2}
 \end{figure}
 
-The header contains contains a preamble which is used to synchronise the communication timing between the base station and end devices and a synchronisation word to indicate, to the end device, the start of data transmission. The header has some form of Cyclic Redundancy Check (CRC), which is an error detection technique that appends a check value ,produced by the transmitter, to the header. This check value is recalculated on the receiver side and compared to the append value to ensure that no errors occurred during transmission.  The payload contains that message intended to be sent between the base station and end device. The payload sub-frame also ends with a CRC with the same error detection purposes, ensuring that the right data is received by the transmitting or receiving device. The data packet can also encoded with a form of error correction, Forward Error Correction (FEC), which can enabled or disabled. FEC is another technique to mitigate the errors that could error during transmission, by encoding the the payload in a redundant way to limit the number of errors and avoid re-transmission of the message.
-[1], [2], [3], [4]
+The header contains contains a preamble which is used to synchronise the communication timing between the base 
+station and end devices and a synchronisation word to indicate, to the end device, the start of data transmission. 
+The header has some form of Cyclic Redundancy Check (CRC), which is an error detection technique that appends a check 
+value ,produced by the transmitter, to the header. This check value is recalculated on the receiver side and compared to 
+the append value to ensure that no errors occurred during transmission.  The payload contains that message intended to 
+be sent between the base station and end device. The payload sub-frame also ends with a CRC with the same error 
+detection purposes, ensuring that the right data is received by the transmitting or receiving device. The data packet 
+can also encoded with a form of error correction, Forward Error Correction (FEC), which can enabled or disabled. FEC is 
+another technique to mitigate the errors that could error during transmission, by encoding the the payload in a 
+redundant way to limit the number of errors and avoid re-transmission of the message \parencite{probee} 
+\parencite{mrouse} \parencite{syncword} \parencite{crcwiki}.
+%[1], [2], [3], [4]
 %REFERENCES%
-%1 . [https://pro-bee-user-content-eu-west-1.s3.amazonaws.com/public/users/Integrators/929cb090-e779-401a-b06c-c629ff6b0fea/ap-cambridgestartuplimi/Weightless-P\_v1.03.pdf], [Undestanding Weightless]%
+%1 .[https://pro-bee-user-content-eu-west-1.s3.amazonaws.com/public/users/Integrators/929cb090-e779-401a-b06c-c629ff6b0fea/ap-cambridgestartuplimi/Weightless-P\_v1.03.pdf], [Understanding Weightless]%
 %2. https://whatis.techtarget.com/definition/preamble%
 %3. https://en.wikipedia.org/wiki/Syncword%
 %4 .https://en.wikipedia.org/wiki/Cyclic_redundancy_check %
@@ -430,10 +468,44 @@ The header contains contains a preamble which is used to synchronise the communi
 %[https://www.mathworks.com/help/comm/examples.html?category=rf-propagation]%Range and Power Simulation %
 
 \subsection{Communication Range}
+Base stations supplied by Ubiik have a receive sensitivity of -129 dBm. With conservative estimates of losses the link
+budget was calculated as follows:
+
+%https://en.wikipedia.org/wiki/Free-space_path_loss
+
+\begin{table}[!htp]
+\begin{tabular}{|l|l|rl|l|l|rl|}
+\hline
+Transmitter antenna gain & $G_{tx}$ & 0&dB & Transmitter power & $P_{tx}$ & 14&dBm \\
+Transmitter antenna loss & $L_{tx}$ & 3&dB & Receiver sensitivity & $S_{rx}$ & -129&dBm \\
+Receiver antenna gain & $G_{rx}$ & 13&dB & Frequency & $f$ & 868&Hz \\
+Receiver antenna loss & $L_{rx}$ & 3&dB &&&&\\
+\hline
+\end{tabular}
+\end{table}
+
+The power received by the base station, $P_{rx}$, is given by the following formula:
+\[P_{rx} = P_{tx} - L_{tx} + G_{tx} - FSPL + G_{rx} - L_{rx}\]
+Rearranging this formula and substituting the values allows for a $FSPL$ value of $153\,dB$.
+The free space path loss, $FSPL$, in dB with distance, $d$, in km and frequency, $f$, in MHz is given by the following 
+formula:
+\[FSPL = 20log_{10}(d) + 20log_{10}(f) + 32,44\] %https://en.wikipedia.org/wiki/Free-space_path_loss
+Rearranging the above formula and allowing for a margin of $25\,dB$ in losses $d$ is calculated as:
+\[d = 48\,km\]
+This range is theoretical and does not accurately take terrain obstructions etc. into consideration. The link budget, 
+however, allows for enough overhead to allow a small number of base stations of small size and average internet connectivity
+to cover a large rural or urban-edge environment.
+
 
 \subsection{Power Consumption}
+The RF module manufacturer, Ubiik, specifies sleep current as $<4\,\mu A$, transmit current at $25\,mW$ 
+transmitted power as $49\,mA$ and receive current as $13\,mA$. %Reference here
+The RF module takes a $3,3\,V$ power supply.
+
+If no additional data is requested by the base station the transmit duty cycle will be under 1\%.
 
 \subsection{Power Control}
+The $AT+TXPWR$ AT command can be used to specify the desired transmitter output power in dBm units.
 
 \section{Power Supply Design}
 \subsection{User requirements in regards to power supply of system}
@@ -455,9 +527,6 @@ Since our device needs to stay alert 24/7 for poles that might fall or short any
 
 Another main concern was about the duality, and as long as there is sunshine there will be enough energy to supply power towards the system.  
 
-\section{Additional Design Components}
-
-\section{References}
 \printbibliography
 
 \section{Appendices}

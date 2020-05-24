@@ -1,6 +1,5 @@
 \documentclass[12pt]{article}
 \usepackage[english]{babel}
-\usepackage{natbib}
 \usepackage{url}
 \usepackage[utf8x]{inputenc}
 \usepackage{amsmath}
@@ -14,8 +13,11 @@
 \usepackage{verbatim}
 \usepackage{listings}
 \usepackage[makeroom]{cancel}
+\usepackage{csquotes}
+\usepackage[backend=biber]{biblatex}
+\addbibresource{bibliography.bib}
 
-%\usepackage{opensans}% 
+\usepackage{opensans}
 \renewcommand{\familydefault}{\sfdefault}
 
 \usepackage[T1]{fontenc}
@@ -208,7 +210,7 @@ The following faults must be detectable:
   
     \end{tabular}    
   
-  \label{tab:faults}
+  \label{tab:usreq}
   \end{table}
 \end{center}
 
@@ -284,6 +286,7 @@ interrupt is sent through.
 
 The LSM6DS33 has various modes of operation. The one chosen for this sensing project is the case when both the gyroscope
 and accelerometer are active for continuous monitoring of data from both devices. During active mode, the gyroscope and 
+
 accelerometer must perform at the appropriate frequencies discussed in the modelling subsection . The gyroscope and accelerometer can operate at low power
 modes. This is configured by setting G_HM_MODE bit in CTRL7_G (16h) and XL_HM_MODE bit in CTRL6_C (15h) to 1. 
 
@@ -372,19 +375,60 @@ computation and data channels  from  the Microcontroller.
 
 \subsection{Wireless Protocol}
 
-The Weightless wireless technology standard has been selected for the wireless communication needs of each sensor node. Weightless supports data transmission over long distances and is a standard designed for low-power wide area networks (LPWAN) involving base stations and end devices. For the purposes of the project, some criteria was identified to measure the performance of the wireless technology standard selected: the power efficiency, range, network capacity and  functionality and ease of configurability.(complexity) Weightless-P is a open standard and operates across the range of ISM, sub GHz  frequency bands for ease of development of IoT systems. 
+The Weightless wireless technology standard has been selected for the wireless communication needs of the wireless commmunications module on the sensor node. Weightless supports supports secure bidirectional data transmission over long distances and is a standard designed for low-power wide area networks (LPWAN) involving base stations and end or terminal devices. For the purposes of the project, some criteria was identified to measure the performance of the wireless technology standard selected: the power efficiency, range, network capacity and  functionality and ease of configurability(complexity) Weightless is a open standard and operates across the range of Industrial, Scientific and Medical ISM, sub GHz  frequency bands for ease of development of IoT systems. 
 
-It was recognised that interference and noise in urban areas compared to rural areas differ, therefore the transmission range would also be affected in different ways. That's why a wireless standard with an adaptive data rate and transmission power was selected to cater for the different signal paths and the environments in which the base stations and sensors nodes will be placed. That together with the fact that the end devices using Weightless can also be configured to be idle/turn to sleep mode, will allow for better power efficiency and aid to maximise the lifespan of our sensor nodes. 
+It was also recognised that interference and noise in urban areas compared to rural areas differ, therefore the transmission range would also be affected in different ways. That's why a wireless standard with an adaptive data rate and transmission power was selected to cater for the different signal paths and the environments in which the base stations and sensors nodes will be placed. That together with the fact that the end devices using Weightless can also be configured to be idle/turn to sleep mode, will allow for better power efficiency and aid to maximise the lifespan of our sensor nodes. 
 To also save on costs we also identified the need for a standard that has large network capacity, allowing the use of fewer base stations that can each cover communication between multiple sensor nodes.
 
-[https://www.ubiik.com/post/2016/09/21/what-is-weightless-p], [https://www.electronicdesign
-.com/industrial-automation/article/21807028/choosing-the-right-wireless-protocol-for-your-iot-application], [https://radiobridge.com/blog/choosing-the-right-wireless-standard-for-your-iot-sensors]
+%REFERENCES%
+%1 . [https://www.ubiik.com/post/2016/09/21/what-is-weightless-p], %
+%2 .[https://www.electronicdesign.com/industrial-automation/article/21807028/choosing-the-right-wireless-protocol-for-your-iot-application],%
+%3.  [https://radiobridge.com/blog/choosing-the-right-wireless-standard-for-your-iot-sensors]%
 
 \subsection{Message Packet Design}
+%Include explanation of FEC%
+Weightless uses a radio frame, which acts as a framework, structuring how uplink and downlink data transmission will take place between the end devices and the base stations. This radio frame structure describes the format and access methods for the data packets (MAC layer) and also a physical (PHY layer) description of how the bits of binary data will be formatted into a form suitable for radio transmission. The frame structure is shown in Figure 1:\newline
 
+\begin{figure}[h]
+\caption{Frame structure, [1]}
+\includegraphics[scale = 0.55]{./images/comms_frame.png}
+\end{figure}
+
+Key:
+\begin{itemize}
+\item SIB: System Information Blocks, used for frame synchronization and to broadcast semi-static parameters of the Base Station and Base Station Network
+\item DL\_RA: Downlink Resource Allocation, composed of multiple bursts describing the allocated downlink transmission slots.
+\item UL\_RA: Uplink Resource Allocation composed of multiple bursts describing the allocated uplink transmission slots.
+\item DL\_ALLOC: the section for allocated downlink transmissions.
+\item UL\_ALLOC: the section for allocated and contended uplink transmissions.
+\item IDLE: an idle slot in which no End Device is allowed to transmit. Reserved for measurements and future use. [1]
+\end{itemize}
+
+It is within this frame structure that the message packet structures for both uplink and downlink transmission are defined, in the  DL\_ALLOC and UL\_ALLOC  sub-frames in Figure 1. Due to the different transmission environments that the sensor modules will be exposed to, careful consideration was taken to ensure that the effects of noise and interference are mitigated to avoid data corruption, which causes errors in the bits of data that are transmitted between the nodes and the base stations. The Weightless standard ensures that the message packets have some form of error correction technique or redundancy. Both the uplink and downlink data packets have the same basic structure as shown in Figure 2: \newline \newline \newline \newline \newline
+
+\begin{figure}[h]
+\caption{Message structure, [1]}
+\includegraphics[scale = 0.7]{./images/message_structure.png}
+\end{figure}
+
+The header contains contains a preamble which is used to synchronise the communication timing between the base station and end devices and a synchronisation word to indicate, to the end device, the start of data transmission. The header has some form of Cyclic Redundancy Check (CRC), which is an error detection technique that appends a check value ,produced by the transmitter, to the header. This check value is recalculated on the receiver side and compared to the append value to ensure that no errors occurred during transmission.  The payload contains that message intended to be sent between the base station and end device. The payload sub-frame also ends with a CRC with the same error detection purposes, ensuring that the right data is received by the transmitting or receiving device. The data packet can also encoded with a form of error correction, Forward Error Correction (FEC), which can enabled or disabled. FEC is another technique to mitigate the errors that could error during transmission, by encoding the the payload in a redundant way to limit the number of errors and avoid re-transmission of the message.
+[1], [2], [3], [4]
+%REFERENCES%
+%1 . [https://pro-bee-user-content-eu-west-1.s3.amazonaws.com/public/users/Integrators/929cb090-e779-401a-b06c-c629ff6b0fea/ap-cambridgestartuplimi/Weightless-P\_v1.03.pdf], [Undestanding Weightless]%
+%2. https://whatis.techtarget.com/definition/preamble%
+%3. https://en.wikipedia.org/wiki/Syncword%
+%4 .https://en.wikipedia.org/wiki/Cyclic_redundancy_check %
+%5. https://en.wikipedia.org/wiki/Forward_error_correction%
 \subsection{Range and Error rate simulations}
-[https://www.mathworks.com/help/comm/examples/bluetooth-low-energy-bit-error-rate-simulation.html], %Bit Error Rates - Need to find one for  Weightless%
-[https://www.mathworks.com/help/comm/examples.html?category=rf-propagation]%Range and Power Simulation %
+%Bit Error Rates - Need to find one for  Weightless%
+%[https://www.mathworks.com/help/comm/examples/bluetooth-low-energy-bit-error-rate-simulation.html],% 
+%[https://www.mathworks.com/help/comm/examples.html?category=rf-propagation]%Range and Power Simulation %
+
+\subsection{Communication Range}
+
+\subsection{Power Consumption}
+
+\subsection{Power Control}
 
 \section{Power Supply Design}
 \subsection{User requirements in regards to power supply of system}
@@ -398,7 +442,9 @@ Since the power supply will be independent from  excess power supplies to mainta
 Since the design chose to use a solar-energy system to charge and power the device, for the device to function at its most sufficient power, it relies heavily on the amount of sun light it receives. The main reason the design chooses a solar energy power supply system is because South Africa is one of the best places to use this technology due to its sunny climate. "As Professor Detlev Kröger, Senior Researcher and Emeritus Professor in the Department of Mechanical and Mechatronic Engineering at Stellenbosch University claims that South Africa is one of the best places in the world to develop solar power. "Citing
 https://sola.africa/news/south-africas-solar-resource-compared-to-the-rest-of-the-world/
 
+
 %According to the government website on energy, it states that ``Most areas in South Africa average more than 2 500 hours of sunshine per year, and average solar-radiation levels range between 4.5 and $6.5kWh/m^2$ in one day. " This basically means that the whole country is has sun light most of the time through out the year. "The annual 24-hour global solar radiation average is about 220 W/m2 for South Africa, compared with about 150 W/m2 for parts of the USA, and about 100 W/m2 for Europe and the United Kingdom. This makes South Africa's local resource one of the highest in the world." Citing http://www.energy.gov.za/files/esources/renewables/r_solar.html
+
 
 Since our device needs to stay alert 24/7 for poles that might fall or short anytime, the power supply needs to be most reliable to the device. The device needs to be on for as long as possible. 
 
@@ -407,6 +453,7 @@ Another main concern was about the duality, and as long as there is sunshine the
 \section{Additional Design Components}
 
 \section{References}
+\printbibliography
 
 \section{Appendices}
 \subsection{Magnetic field measurement modeling}

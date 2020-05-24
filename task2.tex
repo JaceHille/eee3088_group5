@@ -258,6 +258,7 @@ The LP525H has a digital barometer on it to measure pressure.
 We will look at each of the onboard chips to see how they functionalities unite to create this sensing device and the 
 features that enable us to use it. 
 
+[https://www.pololu.com/product/2739],[https://www.pololu.com/file/0J1105/altimu-10-v5-dimension-diagram.pdf]
 \subsection{Accuracy}
 Sensing devices must be able to retrieve information of the pole’s current situation and relay that data to the onboard 
 signal receptors accurately, process the data and prepare it for transceival to a responding device. This means the on 
@@ -292,6 +293,7 @@ accelerometer is coupled with the compass on the LIS3MDL.
 The LIS3MDL’s accuracy is affected by high currents which power poles are prone to. High currents affect the magnetic 
 field readings which are important for the functioning of the compass. They can alter these readings and cause errors.
 
+[https://www.pololu.com/file/0J1087/LSM6DS33.pdf],[https://www.pololu.com/file/0J1089/LIS3MDL.pdf]
 \subsection{Device Interfacing}
 The three ICs in this instance are selected as the slave devices. The microcontroller they are embedded onto uses the 
 I2C serial protocol and SPI communication protocol to communicate with the chips. We will use the I2C protocol. 
@@ -312,6 +314,7 @@ high. This transition from a low to a high data line while the clock signal is h
 The master device then sends a byte of data to all ICs. The first seven bits of the byte specify the address of the 
 chip. A device to write to and/or read from is selected by specifying the address of the IC. 
 
+[https://www.pololu.com/file/0J1090/LIS3MDL-AN4602.pdf]
 \begin{table}[]
   \begin{tabular}{|l|l|}
     \hline
@@ -341,6 +344,7 @@ the SDA line while the clock line is high initialises the stop condition and the
 A temperature sensor is embedded on the magnetometer. It is configured using \\ TEMP\_EN bit in CTRL\_REG1 (20h) and 
 is set to "1". 
 
+[https://www.pololu.com/file/0J761/LPS25H.pdf]
 
 \subsection{Modeling of Single axis Vibration}
 \includegraphics[scale = 0.5]{XaxisVibrations.PNG} 
@@ -351,7 +355,8 @@ By comparing these frequency spectrum, physical changes in the pole can be detec
 In this example we can see that the highest frequency of significance is lower than 10kHz. 
 Thus by using Nyquist Sampling Theory to completely sample this signal a minimum sampling rate of 20kHz is required. 
 
-
+\textit{ The measurements used for generating this model were provided in the 
+"Pole measurement data EEE3088.xlsx" File provided by the customer}
 \subsection[]{Modeling of Magnetic field from Line Currents}
 \includegraphics[scale = 0.45]{MagneticFFT.PNG}
 

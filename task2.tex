@@ -1,6 +1,5 @@
 \documentclass[12pt]{article}
 \usepackage[english]{babel}
-\usepackage{natbib}
 \usepackage{url}
 \usepackage[utf8x]{inputenc}
 \usepackage{amsmath}
@@ -14,8 +13,11 @@
 \usepackage{verbatim}
 \usepackage{listings}
 \usepackage[makeroom]{cancel}
+\usepackage{csquotes}
+\usepackage[backend=biber]{biblatex}
+\addbibresource{bibliography.bib}
 
-%\usepackage{opensans}% 
+\usepackage{opensans}
 \renewcommand{\familydefault}{\sfdefault}
 
 \usepackage[T1]{fontenc}
@@ -208,7 +210,7 @@ The following faults must be detectable:
   
     \end{tabular}    
   
-  \label{tab:faults}
+  \label{tab:usreq}
   \end{table}
 \end{center}
 
@@ -255,7 +257,7 @@ interrupt is sent through.
 The LSM6DS33 has various modes of operation. The one chosen for this sensing project is the case when both the gyroscope
 and accelerometer are active for continuous monitoring of data from both devices. During active mode, the gyroscope and 
 accelerometer must perform at “whatever we chose” respectively. The gyroscope and accelerometer can operate at low power
-modes. This is configured by setting G_HM_MODE bit in CTRL7_G (16h) and XL_HM_MODE bit in CTRL6_C (15h) to 1. 
+modes. This is configured by setting G\_HM\_MODE bit in CTRL7\_G (16h) and XL\_HM\_MODE bit in CTRL6\_C (15h) to 1. 
 
 The gyroscope is accurate at tracking rotation on a short time-scale only. In order to compensate for this, the 
 accelerometer is coupled with the compass on the LIS3MDL.
@@ -346,15 +348,19 @@ The Weightless wireless technology standard has been selected for the wireless c
 
 It was recognised that interference and noise in urban areas compared to rural areas differ, therefore the transmission range would also be affected in different ways. That's why a wireless standard with an adaptive data rate and transmission power was selected to cater for the different signal paths and the environments in which the base stations and sensors nodes will be placed. That together with the fact that the end devices using Weightless can also be configured to be idle/turn to sleep mode, will allow for better power efficiency and aid to maximise the lifespan of our sensor nodes. 
 To also save on costs we also identified the need for a standard that has large network capacity, allowing the use of fewer base stations that can each cover communication between multiple sensor nodes.
-
-[https://www.ubiik.com/post/2016/09/21/what-is-weightless-p], [https://www.electronicdesign
-.com/industrial-automation/article/21807028/choosing-the-right-wireless-protocol-for-your-iot-application], [https://radiobridge.com/blog/choosing-the-right-wireless-standard-for-your-iot-sensors]
+\cite{gallorinichoose}
 
 \subsection{Message Packet Design}
 
 \subsection{Range and Error rate simulations}
 [https://www.mathworks.com/help/comm/examples/bluetooth-low-energy-bit-error-rate-simulation.html], %Bit Error Rates - Need to find one for  Weightless%
 [https://www.mathworks.com/help/comm/examples.html?category=rf-propagation]%Range and Power Simulation %
+
+\subsection{Communication Range}
+
+\subsection{Power Consumption}
+
+\subsection{Power Control}
 
 \section{Power Supply Design}
 \subsection{User requirements in regards to power supply of system}
@@ -377,6 +383,7 @@ Another main concern was about the duality, and as long as there is sunshine the
 \section{Additional Design Components}
 
 \section{References}
+\printbibliography
 
 \section{Appendices}
 \subsection{Magnetic field measurement modeling}
